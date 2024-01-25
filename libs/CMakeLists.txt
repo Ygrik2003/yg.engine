@@ -1,0 +1,17 @@
+cmake_minimum_required(VERSION ${CMAKE_VERSION})
+
+set(LIB_PATHS ${CMAKE_CURRENT_LIST_DIR}/linux/
+              ${CMAKE_CURRENT_LIST_DIR}/android/ ${CMAKE_CURRENT_LIST_DIR}/win/)
+
+set(LIB_INCLUDE_DIR ${CMAKE_CURRENT_LIST_DIR}/include)
+
+find_library(
+    libSDL3
+    NAMES SDL3
+    PATHS ${LIB_PATHS}
+    NO_DEFAULT_PATH NO_CMAKE_FIND_ROOT_PATH REQUIRED)
+
+add_library(SDL3::SDL3 SHARED IMPORTED GLOBAL)
+set_target_properties(
+    SDL3::SDL3 PROPERTIES IMPORTED_LOCATION ${libSDL3}
+                          INTERFACE_INCLUDE_DIRECTORIES ${LIB_INCLUDE_DIR})
