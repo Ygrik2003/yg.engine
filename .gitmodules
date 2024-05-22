@@ -1,21 +1,21 @@
 [submodule "modules/SDL"]
-	path = modules/SDL
+	path = src/external/SDL
 	url = git@github.com:libsdl-org/SDL.git
 [submodule "modules/glm"]
-	path = modules/glm
+	path = src/external/glm
 	url = git@github.com:g-truc/glm
 [submodule "modules/imgui"]
-	path = modules/imgui
+	path = src/external/imgui
 	url = git@github.com:ocornut/imgui
 [submodule "modules/Catch2"]
-	path = modules/Catch2
+	path = src/external/Catch2
 	url = git@github.com:catchorg/Catch2.git
 [submodule "modules/tracy"]
-	path = modules/tracy
+	path = src/external/tracy
 	url = git@github.com:wolfpld/tracy.git
 [submodule "modules/spdlog"]
-	path = modules/spdlog
+	path = src/external/spdlog
 	url = git@github.com:gabime/spdlog.git
 [submodule "modules/libassert"]
-	path = modules/libassert
+	path = src/external/libassert
 	url = git@github.com:jeremy-rifkin/libassert.git
