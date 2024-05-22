@@ -1,4 +1,4 @@
-#include "window/render/render_context_opengl.hxx"
+#include "render/opengl/render_context_opengl.hxx"
 #include "window/window_manager.hxx"
 #include "window/window_sdl.hxx"
 

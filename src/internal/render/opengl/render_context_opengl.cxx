@@ -1,6 +1,6 @@
 #include "render_context_opengl.hxx"
 
-#include "window/render/vertex_buffer.hxx"
+#include "render/vertex_buffer.hxx"
 
 #include "glad/glad.h"
 

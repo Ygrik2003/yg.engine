@@ -1,12 +1,9 @@
 cmake_minimum_required(VERSION 3.28)
 
-file(
-    GLOB_RECURSE
-    engine_sources
-    CONFIGURE_DEPENDS
-    ${CMAKE_CURRENT_LIST_DIR}/*.cxx
-    ${CMAKE_CURRENT_LIST_DIR}/*.hxx)
-list(REMOVE_ITEM engine_sources ${CMAKE_CURRENT_LIST_DIR}/main.cxx)
+add_subdirectory(render)
+add_subdirectory(window)
+
+set(engine_sources ${render_sources} ${window_manager_sources})
 
 add_library(yg_engine OBJECT ${engine_sources})
 target_include_directories(yg_engine PUBLIC ${CMAKE_CURRENT_LIST_DIR})

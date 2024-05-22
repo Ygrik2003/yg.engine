@@ -1,4 +1,4 @@
-#include "window/render/types.hxx"
+#include "render/types.hxx"
 
 class vertex_buffer
 {

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "window/render/render_context.hxx"
+#include "render/render_context.hxx"
 
 #include <cstdint>
 
