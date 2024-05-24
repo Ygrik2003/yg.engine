@@ -3,8 +3,8 @@
 namespace yg
 {
 
-/// @brief Parrent class for any render api realization (Vulkan, OpenGL, Metal,
-/// etc.) If you create new child class, you shoud set redner_api
+/// @brief Parent class for any render api realization (Vulkan, OpenGL, Metal,
+/// etc.) If you create new child class, you should set render_api
 class render_context
 {
 public:
