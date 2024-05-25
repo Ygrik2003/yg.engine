@@ -24,7 +24,7 @@ template <typename vertex_type>
 inline void yg::vertex_buffer_opengl<vertex_type>::bind()
 {
     glBindBuffer(GL_ARRAY_BUFFER, handle);
-    GL_CHECK_ERRORS()
+    GL_CHECK_ERRORS();
 }
 
 } // namespace yg

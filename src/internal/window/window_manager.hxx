@@ -1,27 +1,12 @@
 #pragma once
 
+#include "base_types.hxx"
 #include "render/render_context.hxx"
 
 #include <cstdint>
 
 namespace yg
 {
-
-#pragma pack(push, 8)
-struct window_config
-{
-    const char* name = "Tanchiki";
-
-    uint16_t size_x;
-    uint16_t size_y;
-
-    bool is_fullscreen;
-    bool is_resizeble;
-
-    const uint8_t fps = 60;
-};
-#pragma pack(pop)
-
 class window
 {
 public:

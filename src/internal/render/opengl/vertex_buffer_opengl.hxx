@@ -9,11 +9,11 @@ template <typename vertex_type>
 class vertex_buffer_opengl : public vertex_buffer<vertex_type>
 {
 public:
-    vertex_buffer_opengl(const vertex_type* vertices, std::size_t count);
-    void bind() override;
+    inline vertex_buffer_opengl(const vertex_type* vertices, std::size_t count);
+    inline void bind() override;
 
 private:
-    uint32_t handle{ 0 };
+    std::uint32_t handle{ 0 };
 };
 
 } // namespace yg
