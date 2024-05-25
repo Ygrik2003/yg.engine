@@ -9,7 +9,8 @@ template <typename vertex_type>
 class vertex_buffer_opengl : public vertex_buffer<vertex_type>
 {
 public:
-    inline vertex_buffer_opengl(const vertex_type* vertices, std::size_t count);
+    vertex_buffer_opengl(const vertex_type* vertices, std::size_t count);
+    ~vertex_buffer_opengl();
     inline void bind() override;
 
 private:

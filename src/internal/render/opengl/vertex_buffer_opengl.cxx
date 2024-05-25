@@ -5,7 +5,7 @@
 namespace yg
 {
 template <typename vertex_type>
-inline vertex_buffer_opengl<vertex_type>::vertex_buffer_opengl(
+vertex_buffer_opengl<vertex_type>::vertex_buffer_opengl(
     const vertex_type* vertices, std::size_t count)
 {
     glGenBuffers(1, &handle);
@@ -18,6 +18,15 @@ inline vertex_buffer_opengl<vertex_type>::vertex_buffer_opengl(
 
     glBufferData(GL_ARRAY_BUFFER, size_in_bytes, vertices, GL_STATIC_DRAW);
     GL_CHECK_ERRORS();
+}
+
+template <class vertex_type>
+vertex_buffer_opengl<vertex_type>::~vertex_buffer_opengl()
+{
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    GL_CHECK_ERRORS()
+    glDeleteBuffers(1, &handle);
+    GL_CHECK_ERRORS()
 }
 
 template <typename vertex_type>
