@@ -1,3 +1,5 @@
+#if defined(YG_ENGINE_MAIN)
+
 #include "base_types.hxx"
 #include "render/opengl/render_context_opengl.hxx"
 #include "window/sdl/window_sdl.hxx"
@@ -5,8 +7,6 @@
 
 #include <chrono>
 #include <thread>
-
-#if defined(YG_ENGINE_MAIN)
 
 int main()
 {

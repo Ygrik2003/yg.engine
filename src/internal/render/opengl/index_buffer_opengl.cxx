@@ -6,7 +6,7 @@
 index_buffer_opengl::index_buffer_opengl(const uint16_t* indexes, size_t count)
 {
     glGenBuffers(1, &handle);
-    GL_CHECK_ERRORS();
+    YG_GL_CHECK_ERRORS();
 
     bind();
 
@@ -14,17 +14,17 @@ index_buffer_opengl::index_buffer_opengl(const uint16_t* indexes, size_t count)
 
     glBufferData(
         GL_ELEMENT_ARRAY_BUFFER, size_in_bytes, indexes, GL_STATIC_DRAW);
-    GL_CHECK_ERRORS();
+    YG_GL_CHECK_ERRORS();
 }
 index_buffer_opengl::~index_buffer_opengl()
 {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-    GL_CHECK_ERRORS()
+    YG_GL_CHECK_ERRORS()
     glDeleteBuffers(1, &handle);
-    GL_CHECK_ERRORS()
+    YG_GL_CHECK_ERRORS()
 }
 void index_buffer_opengl::bind() const
 {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, handle);
-    GL_CHECK_ERRORS();
+    YG_GL_CHECK_ERRORS();
 }

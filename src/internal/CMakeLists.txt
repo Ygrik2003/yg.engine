@@ -2,20 +2,21 @@ cmake_minimum_required(VERSION 3.28)
 
 add_subdirectory(render)
 add_subdirectory(window)
+add_subdirectory(tools)
 
-set(engine_sources ${render_sources} ${window_manager_sources})
+set(engine_sources ${render_sources} ${window_manager_sources} ${tools_sources})
 
-add_library(yg_engine OBJECT ${engine_sources})
+add_library(yg_engine SHARED ${engine_sources})
 target_include_directories(yg_engine PUBLIC ${CMAKE_CURRENT_LIST_DIR})
 target_link_libraries(
     yg_engine
-    PRIVATE SDL3::SDL3
-            libs::glad
-            glm::glm
-            Catch2::Catch2
-            libassert::assert
-    PUBLIC imgui::imgui)
-set_target_properties(yg_engine PROPERTIES POSITION_INDEPENDENT_CODE ON)
+    PRIVATE
+        SDL3::SDL3
+        libs::glad
+        glm::glm
+        imgui::imgui # Need custom UI class for creating UI without direct invoke imgui
+    PUBLIC Catch2::Catch2 libassert::assert spdlog)
+# set_target_properties(yg_engine PROPERTIES POSITION_INDEPENDENT_CODE ON)
 
 add_library(yg::engine ALIAS yg_engine)
 

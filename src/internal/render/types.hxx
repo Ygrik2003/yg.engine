@@ -5,7 +5,7 @@
 #include <array>
 
 #ifdef DEBUG
-#define GL_CHECK_ERRORS()                                                      \
+#define YG_GL_CHECK_ERRORS()                                                   \
     {                                                                          \
         const GLenum err = glGetError();                                       \
         if (err != GL_NO_ERROR)                                                \
@@ -35,7 +35,7 @@
         }                                                                      \
     }
 #else
-#define GL_CHECK_ERRORS()
+#define YG_GL_CHECK_ERRORS()
 #endif
 
 namespace yg
