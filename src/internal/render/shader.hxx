@@ -3,6 +3,7 @@
 #include "render/compiled_shader.hxx"
 
 #include <cstdint>
+#include <map>
 
 namespace yg
 {
@@ -111,6 +112,7 @@ public:
                                std::uint32_t count) = 0;
 
 protected:
-    std::uint32_t program;
+    std::uint32_t                           program;
+    std::map<shader_type, compiled_shader&> compiled_shaders;
 };
 } // namespace yg

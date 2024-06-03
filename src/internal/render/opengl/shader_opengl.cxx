@@ -18,8 +18,30 @@ yg::shader_opengl::~shader_opengl()
     YG_GL_CHECK_ERRORS();
 }
 
-void         yg::shader_opengl::use() const {}
-void         yg::shader_opengl::reload() {}
+void yg::shader_opengl::use() const
+{
+    glUseProgram(program);
+    YG_GL_CHECK_ERRORS();
+}
+void yg::shader_opengl::reload()
+{
+    glDeleteProgram(program);
+    YG_GL_CHECK_ERRORS()
+
+    program = glCreateProgram();
+    YG_GL_CHECK_ERRORS()
+
+    for (auto& [type, shader] : compiled_shaders)
+    {
+        shader.reload();
+        shader.attach(program);
+    }
+
+    glLinkProgram(program);
+    YG_GL_CHECK_ERRORS()
+
+    use();
+}
 std::int32_t yg::shader_opengl::link()
 {
     glLinkProgram(program);
@@ -44,6 +66,7 @@ std::int32_t yg::shader_opengl::link()
 
 void yg::shader_opengl::add_compiled_shader(const compiled_shader& shader)
 {
+    compiled_shaders[shader.get_type()] = shader;
     shader.attach(program);
 }
 
