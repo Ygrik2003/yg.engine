@@ -11,9 +11,9 @@ namespace yg
 class shader
 {
 public:
-    virtual void use() const                                        = 0;
-    virtual void reload()                                           = 0;
-    virtual void add_compiled_shader(const compiled_shader& shader) = 0;
+    virtual void use() const                                  = 0;
+    virtual void reload()                                     = 0;
+    virtual void add_compiled_shader(compiled_shader* shader) = 0;
 
     virtual void set_uniform1(const char* name, std::int32_t value)  = 0;
     virtual void set_uniform1(const char* name, std::uint32_t value) = 0;
@@ -113,6 +113,6 @@ public:
 
 protected:
     std::uint32_t                           program;
-    std::map<shader_type, compiled_shader&> compiled_shaders;
+    std::map<shader_type, compiled_shader*> compiled_shaders;
 };
 } // namespace yg

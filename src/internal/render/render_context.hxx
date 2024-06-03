@@ -1,5 +1,7 @@
 #pragma once
 
+#include "render/types.hxx"
+
 namespace yg
 {
 
@@ -19,8 +21,8 @@ public:
         Vulkan
     };
 
-    virtual result_code initialize()      = 0;
-    virtual result_code render_triangle() = 0;
+    virtual result_code initialize()                                       = 0;
+    virtual result_code render_triangle(const triangle<vertex2d_rgba>& tr) = 0;
 
     render_api get_api() const noexcept { return api; };
 

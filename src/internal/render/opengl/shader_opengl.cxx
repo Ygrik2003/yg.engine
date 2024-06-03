@@ -33,8 +33,8 @@ void yg::shader_opengl::reload()
 
     for (auto& [type, shader] : compiled_shaders)
     {
-        shader.reload();
-        shader.attach(program);
+        shader->reload();
+        shader->attach(program);
     }
 
     glLinkProgram(program);
@@ -64,10 +64,10 @@ std::int32_t yg::shader_opengl::link()
     return is_linked;
 }
 
-void yg::shader_opengl::add_compiled_shader(const compiled_shader& shader)
+void yg::shader_opengl::add_compiled_shader(compiled_shader* shader)
 {
-    compiled_shaders[shader.get_type()] = shader;
-    shader.attach(program);
+    compiled_shaders[shader->get_type()] = shader;
+    shader->attach(program);
 }
 
 void yg::shader_opengl::set_uniform1(const char* name, std::int32_t value) {}

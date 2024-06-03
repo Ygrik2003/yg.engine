@@ -49,6 +49,17 @@ bool yg::window_sdl::process_events()
     return is_alive;
 }
 
+void yg::window_sdl::swap_buffers()
+{
+    SDL_GL_SwapWindow(static_cast<SDL_Window*>(wnd));
+
+    glClearColor(77. / 255., 143. / 255., 210. / 255., 1.);
+    YG_GL_CHECK_ERRORS()
+
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    YG_GL_CHECK_ERRORS()
+}
+
 yg::window::result_code yg::window_sdl::capture_render_context(
     render_context* ctx)
 {

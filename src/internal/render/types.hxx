@@ -54,6 +54,9 @@ struct vertex2d_uv_rgba
     glm::vec2     pos;
     glm::vec2     uv;
     std::uint32_t col;
+
+    static const uint8_t offset_for_texture = sizeof(pos);
+    static const uint8_t offset_for_color   = sizeof(pos) + sizeof(uv);
 };
 
 struct vertex3d_uv_rgba
@@ -61,28 +64,39 @@ struct vertex3d_uv_rgba
     glm::vec3     pos;
     glm::vec2     uv;
     std::uint32_t col;
+
+    static const uint8_t offset_for_texture = sizeof(pos);
+    static const uint8_t offset_for_color   = sizeof(pos) + sizeof(uv);
 };
 struct vertex2d_uv
 {
     glm::vec2 pos;
     glm::vec2 uv;
+
+    static const uint8_t offset_for_texture = sizeof(pos);
 };
 
 struct vertex3d_uv
 {
     glm::vec3 pos;
     glm::vec2 uv;
+
+    static const uint8_t offset_for_texture = sizeof(pos);
 };
 struct vertex2d_rgba
 {
     glm::vec2     pos;
     std::uint32_t col;
+
+    static const uint8_t offset_for_color = sizeof(pos);
 };
 
 struct vertex3d_rgba
 {
     glm::vec3     pos;
     std::uint32_t col;
+
+    static const uint8_t offset_for_color = sizeof(pos);
 };
 
 template <typename vertex_type>

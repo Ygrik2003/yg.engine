@@ -24,6 +24,7 @@ public:
     virtual result_code capture_render_context(render_context* ctx) = 0;
 
     virtual bool process_events() = 0;
+    virtual void swap_buffers()   = 0;
 
     window_api get_api() const noexcept { return api; }
 

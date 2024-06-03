@@ -13,7 +13,7 @@ public:
 
     void use() const override;
     void reload() override;
-    void add_compiled_shader(const compiled_shader& shader) override;
+    void add_compiled_shader(compiled_shader* shader) override;
 
     // TODO: Maybe need move to shader, if it abstract
     [[nodiscard]] std::int32_t link();

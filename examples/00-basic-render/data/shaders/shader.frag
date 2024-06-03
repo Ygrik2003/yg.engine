@@ -1,11 +1,11 @@
 #version 300 es
 precision mediump float;
 
-in vec3 v_position;
+in vec4 color;
 
 out vec4 o_color;
 
 void main()
 {
-    o_color = vec4(result, color.w);
+    o_color = color;
 }

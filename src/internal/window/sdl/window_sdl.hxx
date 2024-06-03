@@ -17,6 +17,7 @@ public:
     result_code capture_render_context(render_context* ctx) override;
 
     bool process_events() override;
+    void swap_buffers() override;
 
 private:
     uint32_t window_flags;

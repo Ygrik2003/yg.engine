@@ -11,6 +11,6 @@ public:
     render_context_opengl(const render_context_opengl&& ctx) = delete;
 
     result_code initialize() override;
-    result_code render_triangle() override;
+    result_code render_triangle(const triangle<vertex2d_rgba>& tr) override;
 };
 } // namespace yg

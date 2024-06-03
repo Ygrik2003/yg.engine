@@ -4,7 +4,7 @@
 
 namespace yg
 {
-class compiled_shader_opengl : compiled_shader
+class compiled_shader_opengl : public compiled_shader
 {
 public:
     compiled_shader_opengl(const char* path, shader_type type);
