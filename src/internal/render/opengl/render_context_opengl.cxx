@@ -15,9 +15,8 @@ void bind_vertexes()
                           GL_FALSE,
                           sizeof(vertex_type),
                           reinterpret_cast<GLvoid*>(0));
-    YG_GL_CHECK_ERRORS()
+    YG_GL_CHECK_ERRORS();
 }
-
 // template <class vertex_type>
 // void bind_normal()
 // {
@@ -51,7 +50,7 @@ void bind_vertexes()
 template <class vertex_type>
 void bind_colors()
 {
-    glEnableVertexAttribArray(3);
+    glEnableVertexAttribArray(1);
     YG_GL_CHECK_ERRORS();
     glVertexAttribPointer(
         1,
@@ -67,22 +66,31 @@ yg::render_context::result_code yg::render_context_opengl::initialize()
 {
     GLuint vbo = 0;
     glGenBuffers(1, &vbo);
+    YG_GL_CHECK_ERRORS();
 
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    YG_GL_CHECK_ERRORS();
 
     GLuint vao = 0;
     glGenVertexArrays(1, &vao);
+    YG_GL_CHECK_ERRORS();
 
     glBindVertexArray(vao);
+    YG_GL_CHECK_ERRORS();
 
     glEnable(GL_BLEND);
+    YG_GL_CHECK_ERRORS();
 
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    YG_GL_CHECK_ERRORS();
 
     glEnable(GL_DEPTH_TEST);
+    YG_GL_CHECK_ERRORS();
     glDisable(GL_CULL_FACE);
+    YG_GL_CHECK_ERRORS();
 
     glViewport(0, 0, 600, 600);
+    YG_GL_CHECK_ERRORS();
 
     return result_code::SUCCESS;
 }
@@ -98,5 +106,5 @@ yg::render_context::result_code yg::render_context_opengl::render_triangle(
 
     glDrawArrays(GL_TRIANGLES, 0, 3);
     YG_GL_CHECK_ERRORS();
-    return result_code();
+    return result_code::SUCCESS;
 }

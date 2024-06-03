@@ -1,6 +1,7 @@
 #include "window_sdl.hxx"
 
-#include <cassert>
+#include "libassert/assert.hpp"
+#include "spdlog/spdlog.h"
 
 #include <SDL3/SDL.h>
 
@@ -23,11 +24,23 @@ yg::window::result_code yg::window_sdl::initialize(const window_config& config)
     int err_code;
 
     err_code = SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_EVENTS);
-    assert(!err_code &&
-           "SDL_Init return error"); // TODO: Use Logger and SDL_Quit
+    if (err_code)
+    {
+        spdlog::critical("Can't init SDL with error: {}", SDL_GetError());
+        SDL_Quit();
+        return result_code::ERROR;
+    }
 
     wnd = SDL_CreateWindow(
         config.name, config.size_x, config.size_y, window_flags);
+
+    if (!wnd)
+    {
+        spdlog::critical("Can't create SDL Window with error: {}",
+                         SDL_GetError());
+        SDL_Quit();
+        return result_code::ERROR;
+    }
 
     return result_code::SUCCESS;
 }
@@ -66,10 +79,14 @@ yg::window::result_code yg::window_sdl::capture_render_context(
     switch (ctx->get_api())
     {
         case render_context::render_api::OpenGL:
+            SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+            SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
+            SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK,
+                                SDL_GL_CONTEXT_PROFILE_ES);
             gl_context = SDL_GL_CreateContext(static_cast<SDL_Window*>(wnd));
             if (gl_context == nullptr)
             {
-                // std::cerr << SDL_GetError();
+                spdlog::critical(SDL_GetError());
                 SDL_Quit();
                 return result_code::ERROR;
             }
@@ -82,7 +99,7 @@ yg::window::result_code yg::window_sdl::capture_render_context(
             };
             if (gladLoadGLES2Loader(load_gl_func) == 0)
             {
-                // std::cerr << "cant init glad" << std::endl;
+                spdlog::critical("cant init glad");
                 SDL_Quit();
                 return result_code::ERROR;
             }

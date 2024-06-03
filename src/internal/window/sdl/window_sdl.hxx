@@ -20,7 +20,7 @@ public:
     void swap_buffers() override;
 
 private:
-    uint32_t window_flags;
+    uint32_t window_flags{ 0 };
     void*    wnd;
     void*    gl_context;
 };

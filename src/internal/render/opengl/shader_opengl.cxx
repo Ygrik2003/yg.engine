@@ -20,6 +20,9 @@ yg::shader_opengl::~shader_opengl()
 
 void yg::shader_opengl::use() const
 {
+    glLinkProgram(program);
+    YG_GL_CHECK_ERRORS();
+
     glUseProgram(program);
     YG_GL_CHECK_ERRORS();
 }
@@ -38,7 +41,7 @@ void yg::shader_opengl::reload()
     }
 
     glLinkProgram(program);
-    YG_GL_CHECK_ERRORS()
+    YG_GL_CHECK_ERRORS();
 
     use();
 }

@@ -8,7 +8,7 @@ out vec4 color;
 
 void main()
 {
-    vec4 res_position = vec4(i_position.x / 2., i_position.y / 2., 0., 1.);
+    vec4 res_position = vec4(i_position.x, i_position.y, 0., 1.);
+    color             = i_color;
     gl_Position       = res_position;
-    color             = vec4(0., 0., 0., 1.);
 }

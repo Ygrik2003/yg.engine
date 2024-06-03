@@ -29,9 +29,11 @@ int main()
     shader_opengl.add_compiled_shader(shader_opengl_vert);
     shader_opengl.add_compiled_shader(shader_opengl_frag);
 
-    yg::triangle<yg::vertex2d_rgba> test_tr{ { { 0., -1. }, 0u },
-                                             { { 1., 1. }, 1u << 16 },
-                                             { { -1., 1. }, 1u << 31 } };
+    shader_opengl.use();
+
+    yg::triangle<yg::vertex2d_rgba> test_tr{ { { 0., -1. }, 0x111111FF },
+                                             { { 1., 1. }, 0x131313FF },
+                                             { { -1., 1. }, 0x212121FF } };
 
     while (wnd_sdl->process_events())
     {

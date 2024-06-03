@@ -15,6 +15,12 @@ yg::compiled_shader_opengl::compiled_shader_opengl(const char* path,
     load();
 }
 
+yg::compiled_shader_opengl::~compiled_shader_opengl()
+{
+    glDeleteShader(shader_id);
+    YG_GL_CHECK_ERRORS();
+}
+
 void yg::compiled_shader_opengl::reload()
 {
     glDeleteShader(shader_id);
