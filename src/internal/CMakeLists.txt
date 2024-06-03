@@ -6,7 +6,7 @@ add_subdirectory(tools)
 
 set(engine_sources ${render_sources} ${window_manager_sources} ${tools_sources})
 
-add_library(yg_engine SHARED ${engine_sources})
+add_library(yg_engine OBJECT ${engine_sources})
 target_include_directories(yg_engine PUBLIC ${CMAKE_CURRENT_LIST_DIR})
 target_link_libraries(
     yg_engine
@@ -16,7 +16,7 @@ target_link_libraries(
         glm::glm
         imgui::imgui # Need custom UI class for creating UI without direct invoke imgui
     PUBLIC Catch2::Catch2 libassert::assert spdlog)
-# set_target_properties(yg_engine PROPERTIES POSITION_INDEPENDENT_CODE ON)
+set_target_properties(yg_engine PROPERTIES POSITION_INDEPENDENT_CODE ON)
 
 add_library(yg::engine ALIAS yg_engine)
 

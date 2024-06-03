@@ -5,7 +5,7 @@
 
 namespace yg
 {
-class shader_opengl : shader
+class shader_opengl : public shader
 {
 public:
     shader_opengl();
@@ -15,7 +15,7 @@ public:
     void reload() override;
     void add_compiled_shader(const compiled_shader& shader) override;
 
-    // Maybe need move to shader, if it abstract
+    // TODO: Maybe need move to shader, if it abstract
     [[nodiscard]] std::int32_t link();
 
     void set_uniform1(const char* name, std::int32_t value) override;
