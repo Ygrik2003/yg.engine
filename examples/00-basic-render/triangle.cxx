@@ -31,9 +31,9 @@ int main()
 
     shader_opengl.use();
 
-    yg::triangle<yg::vertex2d_rgba> test_tr{ { { 0., -1. }, 0x111111FF },
-                                             { { 1., 1. }, 0x131313FF },
-                                             { { -1., 1. }, 0x212121FF } };
+    yg::triangle<yg::vertex2d_rgba> test_tr{ { { 0., -1. }, 0xFF0000FF },
+                                             { { 1., 1. }, 0xFFFF0000 },
+                                             { { -1., 1. }, 0xFF00FF00 } };
 
     while (wnd_sdl->process_events())
     {
@@ -41,7 +41,7 @@ int main()
         using namespace std::this_thread;
         auto result = ctx_opengl->render_triangle(test_tr);
         wnd_sdl->swap_buffers();
-        sleep_for(milliseconds(1000 / wnd_cfg.fps));
+        sleep_for(milliseconds(1000 / wnd_cfg.fps)); // TODO: do real FPS
     }
     return 0;
 }
