@@ -4,7 +4,7 @@
 
 #include <array>
 
-#ifdef DEBUG
+#ifdef __YG_GL_DEBUG__
 #define YG_GL_CHECK_ERRORS()                                                   \
     {                                                                          \
         const GLenum err = glGetError();                                       \
@@ -108,6 +108,10 @@ public:
     {
     }
     inline vertex_type* data() const noexcept { return values.data(); }
+    inline std::size_t  size() const noexcept
+    {
+        return values.size() * sizeof(vertex_type);
+    }
 
 private:
     std::array<vertex_type, 3> values;

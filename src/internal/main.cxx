@@ -5,6 +5,10 @@
 #include "window/sdl/window_sdl.hxx"
 #include "window/window_manager.hxx"
 
+#include "render/types.hxx"
+
+#include <catch2/catch_session.hpp>
+
 #include <chrono>
 #include <thread>
 
@@ -20,6 +24,9 @@ int main()
 
     auto wnd_manager = new yg::window_manager(wnd_cfg, wnd_sdl, ctx_opengl);
 
+#ifdef __YG_UNIT_TESTS__
+    int result = Catch::Session().run();
+#else
     while (wnd_sdl->process_events())
     {
         using namespace std::chrono;
@@ -27,6 +34,7 @@ int main()
 
         sleep_for(milliseconds(1000 / wnd_cfg.fps));
     }
+#endif
     return 0;
 }
 

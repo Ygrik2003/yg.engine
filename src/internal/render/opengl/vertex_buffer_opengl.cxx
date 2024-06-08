@@ -8,7 +8,7 @@ template <typename vertex_type>
 vertex_buffer_opengl<vertex_type>::vertex_buffer_opengl(
     const vertex_type* vertices, std::size_t count)
 {
-    glGenBuffers(1, &handle);
+    glGenBuffers(1, &this->handle);
     YG_GL_CHECK_ERRORS();
 
     bind();
@@ -25,14 +25,14 @@ vertex_buffer_opengl<vertex_type>::~vertex_buffer_opengl()
 {
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     YG_GL_CHECK_ERRORS()
-    glDeleteBuffers(1, &handle);
+    glDeleteBuffers(1, &this->handle);
     YG_GL_CHECK_ERRORS()
 }
 
 template <typename vertex_type>
 inline void yg::vertex_buffer_opengl<vertex_type>::bind()
 {
-    glBindBuffer(GL_ARRAY_BUFFER, handle);
+    glBindBuffer(GL_ARRAY_BUFFER, this->handle);
     YG_GL_CHECK_ERRORS();
 }
 

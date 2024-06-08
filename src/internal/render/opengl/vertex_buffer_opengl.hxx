@@ -12,9 +12,6 @@ public:
     vertex_buffer_opengl(const vertex_type* vertices, std::size_t count);
     ~vertex_buffer_opengl();
     inline void bind() override;
-
-private:
-    std::uint32_t handle{ 0 };
 };
 
 } // namespace yg

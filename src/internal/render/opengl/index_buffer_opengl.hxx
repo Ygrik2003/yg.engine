@@ -10,7 +10,4 @@ public:
     ~index_buffer_opengl();
 
     void bind() const override;
-
-private:
-    std::uint32_t handle{ 0 };
 };
