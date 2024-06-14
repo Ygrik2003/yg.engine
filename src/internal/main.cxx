@@ -7,13 +7,31 @@
 
 #include "render/types.hxx"
 
+#include "argparse/argparse.hxx"
+
+#include "spdlog/spdlog.h"
 #include <catch2/catch_session.hpp>
+#include <libassert/assert.hpp>
 
 #include <chrono>
 #include <thread>
-
-int main()
+int main(int argc, char* argv[])
 {
+    argparse::ArgumentParser command_parser("Engine Runner");
+    command_parser.add_argument("--unit_tests")
+        .help("Engine Runner run UnitTests")
+        .default_value(false);
+
+    try
+    {
+        command_parser.parse_args(argc, argv);
+    }
+    catch (const std::exception& err)
+    {
+        spdlog::critical(err.what());
+        ASSERT("Non valid command arguments");
+    }
+
     yg::window_config wnd_cfg;
     wnd_cfg.size_x = 600;
     wnd_cfg.size_y = 600;
@@ -24,17 +42,20 @@ int main()
 
     auto wnd_manager = new yg::window_manager(wnd_cfg, wnd_sdl, ctx_opengl);
 
-#ifdef __YG_UNIT_TESTS__
-    int result = Catch::Session().run();
-#else
-    while (wnd_sdl->process_events())
+    if (command_parser.is_used("--unit_tests"))
     {
-        using namespace std::chrono;
-        using namespace std::this_thread;
-
-        sleep_for(milliseconds(1000 / wnd_cfg.fps));
+        int result = Catch::Session().run();
     }
-#endif
+    // else
+    // {
+    //     while (wnd_sdl->process_events())
+    //     {
+    //         using namespace std::chrono;
+    //         using namespace std::this_thread;
+
+    //         sleep_for(milliseconds(1000 / wnd_cfg.fps));
+    //     }
+    // }
     return 0;
 }
 

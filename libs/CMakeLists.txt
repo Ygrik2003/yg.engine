@@ -9,3 +9,7 @@ target_include_directories(glad PUBLIC ${CMAKE_CURRENT_LIST_DIR}/glad/include)
 set_target_properties(glad PROPERTIES POSITION_INDEPENDENT_CODE ON)
 
 add_library(libs::glad ALIAS glad)
+
+add_library(argparse INTERFACE ${CMAKE_CURRENT_LIST_DIR}/argparse/argparse.hxx)
+target_include_directories(argparse INTERFACE ${CMAKE_CURRENT_LIST_DIR})
+add_library(libs::argparse ALIAS argparse)

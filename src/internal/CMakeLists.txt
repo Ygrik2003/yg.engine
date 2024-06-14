@@ -16,7 +16,11 @@ target_link_libraries(
         libs::glad
         glm::glm
         imgui::imgui # Need custom UI class for creating UI without direct invoke imgui
-    PUBLIC Catch2::Catch2 libassert::assert spdlog)
+    PUBLIC Catch2::Catch2
+           libassert::assert
+           spdlog
+           Tracy::TracyClient
+           libs::argparse)
 set_target_properties(yg_engine PROPERTIES POSITION_INDEPENDENT_CODE ON)
 
 add_library(yg::engine ALIAS yg_engine)
@@ -24,8 +28,3 @@ add_library(yg::engine ALIAS yg_engine)
 add_executable(yg_engine_runner ${CMAKE_CURRENT_LIST_DIR}/main.cxx)
 target_compile_definitions(yg_engine_runner PRIVATE YG_ENGINE_MAIN)
 target_link_libraries(yg_engine_runner PRIVATE yg::engine)
-
-add_executable(yg_engine_unit_tests ${CMAKE_CURRENT_LIST_DIR}/main.cxx)
-target_compile_definitions(yg_engine_unit_tests PRIVATE YG_ENGINE_MAIN
-                                                        __YG_UNIT_TESTS__)
-target_link_libraries(yg_engine_unit_tests PRIVATE yg::engine)
