@@ -3,6 +3,7 @@
 #include "base_types.hxx"
 #include "render/render_context.hxx"
 
+#include <algorithm>
 #include <cstdint>
 
 namespace yg
@@ -17,11 +18,11 @@ public:
     };
     enum window_api
     {
-        SFML,
+        // SFML,
         SDL
     };
-    virtual result_code initialize(const window_config& config)     = 0;
-    virtual result_code capture_render_context(render_context* ctx) = 0;
+    virtual result_code initialize(window_config& config)                = 0;
+    virtual result_code capture_render_context(yg::render::context* ctx) = 0;
 
     virtual bool process_events() = 0;
     virtual void swap_buffers()   = 0;
@@ -35,7 +36,9 @@ protected:
 class window_manager
 {
 public:
-    window_manager(window_config config, window* backend, render_context* ctx);
+    window_manager(window_config&   config,
+                   window*          backend,
+                   render::context* ctx);
 };
 
 } // namespace yg

@@ -2,10 +2,8 @@
 
 #include <glad/glad.h>
 
-namespace yg
-{
 template <typename vertex_type>
-vertex_buffer_opengl<vertex_type>::vertex_buffer_opengl(
+yg::render::opengl::vertex_buffer_impl<vertex_type>::vertex_buffer_impl(
     const vertex_type* vertices, std::size_t count)
 {
     glGenBuffers(1, &this->handle);
@@ -21,7 +19,7 @@ vertex_buffer_opengl<vertex_type>::vertex_buffer_opengl(
 }
 
 template <class vertex_type>
-vertex_buffer_opengl<vertex_type>::~vertex_buffer_opengl()
+yg::render::opengl::vertex_buffer_impl<vertex_type>::~vertex_buffer_impl()
 {
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     YG_GL_CHECK_ERRORS()
@@ -30,10 +28,8 @@ vertex_buffer_opengl<vertex_type>::~vertex_buffer_opengl()
 }
 
 template <typename vertex_type>
-inline void yg::vertex_buffer_opengl<vertex_type>::bind()
+inline void yg::render::opengl::vertex_buffer_impl<vertex_type>::bind()
 {
     glBindBuffer(GL_ARRAY_BUFFER, this->handle);
     YG_GL_CHECK_ERRORS();
 }
-
-} // namespace yg

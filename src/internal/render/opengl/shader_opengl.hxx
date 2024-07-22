@@ -3,13 +3,13 @@
 #include "render/opengl/compiled_shader_opengl.hxx"
 #include "render/shader.hxx"
 
-namespace yg
+namespace yg::render::opengl
 {
-class shader_opengl : public shader
+class shader_impl : public shader
 {
 public:
-    shader_opengl();
-    ~shader_opengl();
+    shader_impl();
+    ~shader_impl();
 
     void use() const override;
     void reload() override;
@@ -117,4 +117,4 @@ public:
                        float*        val4,
                        std::uint32_t count) override;
 };
-} // namespace yg
+} // namespace yg::render::opengl

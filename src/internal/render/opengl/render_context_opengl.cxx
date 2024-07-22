@@ -62,7 +62,8 @@ void bind_colors()
     YG_GL_CHECK_ERRORS();
 }
 
-yg::render_context::result_code yg::render_context_opengl::initialize()
+yg::render::context::result_code yg::render::opengl::context_impl::initialize(
+    const window_config& config)
 {
     GLuint vbo = 0;
     glGenBuffers(1, &vbo);
@@ -89,13 +90,14 @@ yg::render_context::result_code yg::render_context_opengl::initialize()
     glDisable(GL_CULL_FACE);
     YG_GL_CHECK_ERRORS();
 
-    glViewport(0, 0, 600, 600);
+    glViewport(0, 0, config.size_x, config.size_y);
     YG_GL_CHECK_ERRORS();
 
     return result_code::SUCCESS;
 }
 
-yg::render_context::result_code yg::render_context_opengl::render_triangle(
+yg::render::context::result_code
+yg::render::opengl::context_impl::render_triangle(
     const triangle<vertex2d_rgba>& tr)
 {
     glBufferData(GL_ARRAY_BUFFER, sizeof(tr), &tr, GL_STATIC_DRAW);

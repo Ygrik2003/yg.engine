@@ -5,7 +5,7 @@
 #include <cstdint>
 #include <map>
 
-namespace yg
+namespace yg::render
 {
 
 class shader
@@ -115,4 +115,4 @@ protected:
     std::uint32_t                           program;
     std::map<shader_type, compiled_shader*> compiled_shaders;
 };
-} // namespace yg
+} // namespace yg::render

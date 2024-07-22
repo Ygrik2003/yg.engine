@@ -3,7 +3,8 @@
 
 #include "glad/glad.h"
 
-index_buffer_opengl::index_buffer_opengl(const uint16_t* indexes, size_t count)
+yg::render::opengl::index_buffer_impl::index_buffer_impl(
+    const uint16_t* indexes, size_t count)
 {
     glGenBuffers(1, &handle);
     YG_GL_CHECK_ERRORS();
@@ -16,14 +17,14 @@ index_buffer_opengl::index_buffer_opengl(const uint16_t* indexes, size_t count)
         GL_ELEMENT_ARRAY_BUFFER, size_in_bytes, indexes, GL_STATIC_DRAW);
     YG_GL_CHECK_ERRORS();
 }
-index_buffer_opengl::~index_buffer_opengl()
+yg::render::opengl::index_buffer_impl::~index_buffer_impl()
 {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     YG_GL_CHECK_ERRORS()
     glDeleteBuffers(1, &handle);
     YG_GL_CHECK_ERRORS()
 }
-void index_buffer_opengl::bind() const
+void yg::render::opengl::index_buffer_impl::bind() const
 {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, handle);
     YG_GL_CHECK_ERRORS();

@@ -38,7 +38,7 @@
 #define YG_GL_CHECK_ERRORS()
 #endif
 
-namespace yg
+namespace yg::render
 {
 struct vertex2d
 {
@@ -117,4 +117,4 @@ private:
     std::array<vertex_type, 3> values;
 };
 
-} // namespace yg
+} // namespace yg::render

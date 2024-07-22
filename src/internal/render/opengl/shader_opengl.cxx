@@ -6,19 +6,19 @@
 #include "shader_opengl.hxx"
 #include "spdlog/spdlog.h"
 
-yg::shader_opengl::shader_opengl()
+yg::render::opengl::shader_impl::shader_impl()
 {
     program = glCreateProgram();
     YG_GL_CHECK_ERRORS();
 }
 
-yg::shader_opengl::~shader_opengl()
+yg::render::opengl::shader_impl::~shader_impl()
 {
     glDeleteProgram(program);
     YG_GL_CHECK_ERRORS();
 }
 
-void yg::shader_opengl::use() const
+void yg::render::opengl::shader_impl::use() const
 {
     glLinkProgram(program);
     YG_GL_CHECK_ERRORS();
@@ -26,7 +26,7 @@ void yg::shader_opengl::use() const
     glUseProgram(program);
     YG_GL_CHECK_ERRORS();
 }
-void yg::shader_opengl::reload()
+void yg::render::opengl::shader_impl::reload()
 {
     glDeleteProgram(program);
     YG_GL_CHECK_ERRORS()
@@ -45,7 +45,7 @@ void yg::shader_opengl::reload()
 
     use();
 }
-std::int32_t yg::shader_opengl::link()
+std::int32_t yg::render::opengl::shader_impl::link()
 {
     glLinkProgram(program);
     YG_GL_CHECK_ERRORS();
@@ -67,146 +67,158 @@ std::int32_t yg::shader_opengl::link()
     return is_linked;
 }
 
-void yg::shader_opengl::add_compiled_shader(compiled_shader* shader)
+void yg::render::opengl::shader_impl::add_compiled_shader(
+    compiled_shader* shader)
 {
     compiled_shaders[shader->get_type()] = shader;
     shader->attach(program);
 }
 
-void yg::shader_opengl::set_uniform1(const char* name, std::int32_t value) {}
-void yg::shader_opengl::set_uniform1(const char* name, std::uint32_t value) {}
-void yg::shader_opengl::set_uniform1(const char* name, float value) {}
-
-void yg::shader_opengl::set_uniform1v(const char*   name,
-                                      std::int32_t* value,
-                                      std::uint32_t count)
+void yg::render::opengl::shader_impl::set_uniform1(const char*  name,
+                                                   std::int32_t value)
 {
 }
-void yg::shader_opengl::set_uniform1v(const char*    name,
-                                      std::uint32_t* value,
-                                      std::uint32_t  count)
+void yg::render::opengl::shader_impl::set_uniform1(const char*   name,
+                                                   std::uint32_t value)
 {
 }
-void yg::shader_opengl::set_uniform1v(const char*   name,
-                                      float*        value,
-                                      std::uint32_t count)
+void yg::render::opengl::shader_impl::set_uniform1(const char* name,
+                                                   float       value)
 {
 }
 
-void yg::shader_opengl::set_uniform2(const char*  name,
-                                     std::int32_t val1,
-                                     std::int32_t val2)
+void yg::render::opengl::shader_impl::set_uniform1v(const char*   name,
+                                                    std::int32_t* value,
+                                                    std::uint32_t count)
 {
 }
-void yg::shader_opengl::set_uniform2(const char*   name,
-                                     std::uint32_t val1,
-                                     std::uint32_t val2)
+void yg::render::opengl::shader_impl::set_uniform1v(const char*    name,
+                                                    std::uint32_t* value,
+                                                    std::uint32_t  count)
 {
 }
-void yg::shader_opengl::set_uniform2(const char* name, float val1, float val2)
-{
-}
-
-void yg::shader_opengl::set_uniform2v(const char*   name,
-                                      std::int32_t* val1,
-                                      std::int32_t* val2,
-                                      std::uint32_t count)
-{
-}
-void yg::shader_opengl::set_uniform2v(const char*    name,
-                                      std::uint32_t* val1,
-                                      std::uint32_t* val2,
-                                      std::uint32_t  count)
-{
-}
-void yg::shader_opengl::set_uniform2v(const char*   name,
-                                      float*        val1,
-                                      float*        val2,
-                                      std::uint32_t count)
+void yg::render::opengl::shader_impl::set_uniform1v(const char*   name,
+                                                    float*        value,
+                                                    std::uint32_t count)
 {
 }
 
-void yg::shader_opengl::set_uniform3(const char*  name,
-                                     std::int32_t val1,
-                                     std::int32_t val2,
-                                     std::int32_t val3)
+void yg::render::opengl::shader_impl::set_uniform2(const char*  name,
+                                                   std::int32_t val1,
+                                                   std::int32_t val2)
 {
 }
-void yg::shader_opengl::set_uniform3(const char*   name,
-                                     std::uint32_t val1,
-                                     std::uint32_t val2,
-                                     std::uint32_t val3)
+void yg::render::opengl::shader_impl::set_uniform2(const char*   name,
+                                                   std::uint32_t val1,
+                                                   std::uint32_t val2)
 {
 }
-void yg::shader_opengl::set_uniform3(const char* name,
-                                     float       val1,
-                                     float       val2,
-                                     float       val3)
+void yg::render::opengl::shader_impl::set_uniform2(const char* name,
+                                                   float       val1,
+                                                   float       val2)
 {
 }
 
-void yg::shader_opengl::set_uniform3v(const char*   name,
-                                      std::int32_t* val1,
-                                      std::int32_t* val2,
-                                      std::int32_t* val3,
-                                      std::uint32_t count)
+void yg::render::opengl::shader_impl::set_uniform2v(const char*   name,
+                                                    std::int32_t* val1,
+                                                    std::int32_t* val2,
+                                                    std::uint32_t count)
 {
 }
-void yg::shader_opengl::set_uniform3v(const char*    name,
-                                      std::uint32_t* val1,
-                                      std::uint32_t* val2,
-                                      std::uint32_t* val3,
-                                      std::uint32_t  count)
+void yg::render::opengl::shader_impl::set_uniform2v(const char*    name,
+                                                    std::uint32_t* val1,
+                                                    std::uint32_t* val2,
+                                                    std::uint32_t  count)
 {
 }
-void yg::shader_opengl::set_uniform3v(const char*   name,
-                                      float*        val1,
-                                      float*        val2,
-                                      float*        val3,
-                                      std::uint32_t count)
+void yg::render::opengl::shader_impl::set_uniform2v(const char*   name,
+                                                    float*        val1,
+                                                    float*        val2,
+                                                    std::uint32_t count)
 {
 }
 
-void yg::shader_opengl::set_uniform4(const char*  name,
-                                     std::int32_t val1,
-                                     std::int32_t val2,
-                                     std::int32_t val3,
-                                     std::int32_t val4)
+void yg::render::opengl::shader_impl::set_uniform3(const char*  name,
+                                                   std::int32_t val1,
+                                                   std::int32_t val2,
+                                                   std::int32_t val3)
 {
 }
-void yg::shader_opengl::set_uniform4(const char*   name,
-                                     std::uint32_t val1,
-                                     std::uint32_t val2,
-                                     std::uint32_t val3,
-                                     std::uint32_t val4)
+void yg::render::opengl::shader_impl::set_uniform3(const char*   name,
+                                                   std::uint32_t val1,
+                                                   std::uint32_t val2,
+                                                   std::uint32_t val3)
 {
 }
-void yg::shader_opengl::set_uniform4(
+void yg::render::opengl::shader_impl::set_uniform3(const char* name,
+                                                   float       val1,
+                                                   float       val2,
+                                                   float       val3)
+{
+}
+
+void yg::render::opengl::shader_impl::set_uniform3v(const char*   name,
+                                                    std::int32_t* val1,
+                                                    std::int32_t* val2,
+                                                    std::int32_t* val3,
+                                                    std::uint32_t count)
+{
+}
+void yg::render::opengl::shader_impl::set_uniform3v(const char*    name,
+                                                    std::uint32_t* val1,
+                                                    std::uint32_t* val2,
+                                                    std::uint32_t* val3,
+                                                    std::uint32_t  count)
+{
+}
+void yg::render::opengl::shader_impl::set_uniform3v(const char*   name,
+                                                    float*        val1,
+                                                    float*        val2,
+                                                    float*        val3,
+                                                    std::uint32_t count)
+{
+}
+
+void yg::render::opengl::shader_impl::set_uniform4(const char*  name,
+                                                   std::int32_t val1,
+                                                   std::int32_t val2,
+                                                   std::int32_t val3,
+                                                   std::int32_t val4)
+{
+}
+void yg::render::opengl::shader_impl::set_uniform4(const char*   name,
+                                                   std::uint32_t val1,
+                                                   std::uint32_t val2,
+                                                   std::uint32_t val3,
+                                                   std::uint32_t val4)
+{
+}
+void yg::render::opengl::shader_impl::set_uniform4(
     const char* name, float val1, float val2, float val3, float val4)
 {
 }
 
-void yg::shader_opengl::set_uniform4v(const char*   name,
-                                      std::int32_t* val1,
-                                      std::int32_t* val2,
-                                      std::int32_t* val3,
-                                      std::int32_t* val4,
-                                      std::uint32_t count)
+void yg::render::opengl::shader_impl::set_uniform4v(const char*   name,
+                                                    std::int32_t* val1,
+                                                    std::int32_t* val2,
+                                                    std::int32_t* val3,
+                                                    std::int32_t* val4,
+                                                    std::uint32_t count)
 {
 }
-void yg::shader_opengl::set_uniform4v(const char*    name,
-                                      std::uint32_t* val1,
-                                      std::uint32_t* val2,
-                                      std::uint32_t* val3,
-                                      std::uint32_t* val4,
-                                      std::uint32_t  count)
+void yg::render::opengl::shader_impl::set_uniform4v(const char*    name,
+                                                    std::uint32_t* val1,
+                                                    std::uint32_t* val2,
+                                                    std::uint32_t* val3,
+                                                    std::uint32_t* val4,
+                                                    std::uint32_t  count)
 {
 }
-void yg::shader_opengl::set_uniform4v(const char*   name,
-                                      float*        val1,
-                                      float*        val2,
-                                      float*        val3,
-                                      float*        val4,
-                                      std::uint32_t count)
+void yg::render::opengl::shader_impl::set_uniform4v(const char*   name,
+                                                    float*        val1,
+                                                    float*        val2,
+                                                    float*        val3,
+                                                    float*        val4,
+                                                    std::uint32_t count)
 {
 }

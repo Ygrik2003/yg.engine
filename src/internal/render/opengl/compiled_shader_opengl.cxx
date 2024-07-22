@@ -6,8 +6,8 @@
 #include "glad/glad.h"
 #include "spdlog/spdlog.h"
 
-yg::compiled_shader_opengl::compiled_shader_opengl(const char* path,
-                                                   shader_type type)
+yg::render::opengl::compiled_shader_impl::compiled_shader_impl(const char* path,
+                                                               shader_type type)
 {
     this->type           = type;
     this->path_to_shader = path;
@@ -15,13 +15,13 @@ yg::compiled_shader_opengl::compiled_shader_opengl(const char* path,
     load();
 }
 
-yg::compiled_shader_opengl::~compiled_shader_opengl()
+yg::render::opengl::compiled_shader_impl::~compiled_shader_impl()
 {
     glDeleteShader(shader_id);
     YG_GL_CHECK_ERRORS();
 }
 
-void yg::compiled_shader_opengl::reload()
+void yg::render::opengl::compiled_shader_impl::reload()
 {
     glDeleteShader(shader_id);
     YG_GL_CHECK_ERRORS();
@@ -29,13 +29,14 @@ void yg::compiled_shader_opengl::reload()
     load();
 }
 
-void yg::compiled_shader_opengl::attach(std::uint32_t program) const noexcept
+void yg::render::opengl::compiled_shader_impl::attach(
+    std::uint32_t program) const noexcept
 {
     glAttachShader(program, shader_id);
     YG_GL_CHECK_ERRORS();
 }
 
-void yg::compiled_shader_opengl::load()
+void yg::render::opengl::compiled_shader_impl::load()
 {
     std::string shader_code   = read_file(path_to_shader);
     const char* shader_code_c = shader_code.data();

@@ -8,18 +8,25 @@
 #include "glad/glad.h"
 #include "vulkan/vulkan.h"
 
-yg::window_sdl::window_sdl(render_context::render_api render_api) noexcept
+yg::window_sdl::window_sdl(yg::render::context::api render_api) noexcept
 {
     api = window_api::SDL;
     switch (render_api)
     {
-        case render_context::render_api::OpenGL:
+        case yg::render::context::api::OpenGL:
             window_flags |= SDL_WINDOW_OPENGL;
             break;
     }
 }
 
-yg::window::result_code yg::window_sdl::initialize(const window_config& config)
+yg::window_sdl::~window_sdl() noexcept
+{
+    SDL_GL_DeleteContext(gl_context);
+    SDL_DestroyWindow(static_cast<SDL_Window*>(wnd));
+    SDL_Quit();
+}
+
+yg::window::result_code yg::window_sdl::initialize(window_config& config)
 {
     int err_code;
 
@@ -33,6 +40,22 @@ yg::window::result_code yg::window_sdl::initialize(const window_config& config)
 
     wnd = SDL_CreateWindow(
         config.name, config.size_x, config.size_y, window_flags);
+
+    if (config.is_full_screen)
+    {
+        window_flags |= SDL_WINDOW_FULLSCREEN;
+        int temp_size_x, temp_size_y;
+        SDL_GetWindowSize(
+            static_cast<SDL_Window*>(wnd), &temp_size_x, &temp_size_y);
+        spdlog::info(
+            "Resize window from {}x{} to {}x{}, because window is fullscreen",
+            config.size_x,
+            config.size_y,
+            temp_size_x,
+            temp_size_y);
+        config.size_x = temp_size_x;
+        config.size_y = temp_size_y;
+    }
 
     if (!wnd)
     {
@@ -56,6 +79,7 @@ bool yg::window_sdl::process_events()
         {
             case SDL_EVENT_QUIT:
                 is_alive = false;
+                spdlog::info("SDL_EVENT_QUIT");
                 break;
         }
     }
@@ -66,7 +90,10 @@ void yg::window_sdl::swap_buffers()
 {
     SDL_GL_SwapWindow(static_cast<SDL_Window*>(wnd));
 
-    glClearColor(77. / 255., 143. / 255., 210. / 255., 1.);
+    glClearColor(background_color.r,
+                 background_color.g,
+                 background_color.b,
+                 background_color.a);
     YG_GL_CHECK_ERRORS()
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -74,11 +101,11 @@ void yg::window_sdl::swap_buffers()
 }
 
 yg::window::result_code yg::window_sdl::capture_render_context(
-    render_context* ctx)
+    yg::render::context* ctx)
 {
     switch (ctx->get_api())
     {
-        case render_context::render_api::OpenGL:
+        case yg::render::context::api::OpenGL:
             SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
             SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
             SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK,

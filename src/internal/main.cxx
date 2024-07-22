@@ -2,19 +2,32 @@
 
 #include "base_types.hxx"
 #include "render/opengl/render_context_opengl.hxx"
+#include "render/types.hxx"
+#include "tools/threads/unit_tests_thread.hxx"
 #include "window/sdl/window_sdl.hxx"
 #include "window/window_manager.hxx"
 
-#include "render/types.hxx"
-
 #include "argparse/argparse.hxx"
-
+#include "libassert/assert.hpp"
 #include "spdlog/spdlog.h"
-#include <catch2/catch_session.hpp>
-#include <libassert/assert.hpp>
 
+#include <algorithm>
 #include <chrono>
 #include <thread>
+
+void main_cycle(yg::window* wnd, yg::window_config wnd_cfg)
+{
+    while (wnd->process_events())
+    {
+        using namespace std::chrono;
+        using namespace std::this_thread;
+
+        wnd->swap_buffers();
+
+        sleep_for(milliseconds(1000 / wnd_cfg.fps));
+    }
+}
+
 int main(int argc, char* argv[])
 {
     argparse::ArgumentParser command_parser("Engine Runner");
@@ -33,29 +46,23 @@ int main(int argc, char* argv[])
     }
 
     yg::window_config wnd_cfg;
-    wnd_cfg.size_x = 600;
-    wnd_cfg.size_y = 600;
 
-    yg::window* wnd_sdl =
-        new yg::window_sdl(yg::render_context::render_api::OpenGL);
-    yg::render_context* ctx_opengl = new yg::render_context_opengl();
+    std::shared_ptr<yg::window> wnd_sdl =
+        std::make_shared<yg::window_sdl>(yg::render::context::api::OpenGL);
+    std::shared_ptr<yg::render::context> ctx_opengl =
+        std::make_shared<yg::render::opengl::context_impl>();
+    yg::window_manager wnd_manager(wnd_cfg, wnd_sdl.get(), ctx_opengl.get());
 
-    auto wnd_manager = new yg::window_manager(wnd_cfg, wnd_sdl, ctx_opengl);
-
-    if (command_parser.is_used("--unit_tests"))
+    if constexpr (yg::constants::is_unit_tests_binary)
     {
-        int result = Catch::Session().run();
+        std::unique_ptr<yg::unit_tests_thread> utt;
+        if (command_parser.is_used("--unit_tests"))
+        {
+            utt = std::make_unique<yg::unit_tests_thread>();
+        }
     }
-    // else
-    // {
-    //     while (wnd_sdl->process_events())
-    //     {
-    //         using namespace std::chrono;
-    //         using namespace std::this_thread;
+    main_cycle(wnd_sdl.get(), wnd_cfg);
 
-    //         sleep_for(milliseconds(1000 / wnd_cfg.fps));
-    //     }
-    // }
     return 0;
 }
 

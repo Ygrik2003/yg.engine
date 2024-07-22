@@ -2,6 +2,9 @@
 
 #include "render/types.hxx"
 
+namespace yg::render
+{
+
 class index_buffer
 {
 public:
@@ -10,3 +13,5 @@ public:
 protected:
     std::uint32_t handle{ 0 };
 };
+
+} // namespace yg::render

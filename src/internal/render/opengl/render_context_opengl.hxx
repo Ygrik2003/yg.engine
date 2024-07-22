@@ -1,16 +1,19 @@
 #include "render/render_context.hxx"
 
-namespace yg
+namespace yg::render
 {
-class render_context_opengl : public render_context
+namespace opengl
+{
+class context_impl : public context
 {
 public:
-    render_context_opengl() noexcept { api = render_api::OpenGL; }
-    ~render_context_opengl() noexcept                        = default;
-    render_context_opengl(const render_context_opengl& ctx)  = delete;
-    render_context_opengl(const render_context_opengl&& ctx) = delete;
+    context_impl() noexcept { current_api = api::OpenGL; }
+    ~context_impl() noexcept               = default;
+    context_impl(const context_impl& ctx)  = delete;
+    context_impl(const context_impl&& ctx) = delete;
 
-    result_code initialize() override;
+    result_code initialize(const window_config& config) override;
     result_code render_triangle(const triangle<vertex2d_rgba>& tr) override;
 };
-} // namespace yg
+} // namespace opengl
+} // namespace yg::render

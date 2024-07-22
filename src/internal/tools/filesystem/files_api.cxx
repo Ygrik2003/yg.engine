@@ -1,7 +1,7 @@
 #include "files_api.hxx"
 #include "libassert/assert.hpp"
 
-// TODO: Make it crossplatform
+// TODO: Make it cross-platform with SDL_...
 std::string yg::read_file(const char* path)
 {
     constexpr auto read_size = std::size_t(4096);

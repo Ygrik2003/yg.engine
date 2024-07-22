@@ -1,13 +1,14 @@
 #pragma once
 
+#include "base_types.hxx"
 #include "render/types.hxx"
 
-namespace yg
+namespace yg::render
 {
 
 /// @brief Parent class for any render api realization (Vulkan, OpenGL, Metal,
-/// etc.) If you create new child class, you should set render_api
-class render_context
+/// etc.) If you create new child class, you should set api
+class context
 {
 public:
     enum [[nodiscard]] result_code
@@ -15,18 +16,18 @@ public:
         SUCCESS,
         ERROR
     };
-    enum render_api
+    enum api
     {
         OpenGL,
-        Vulkan
+        // Vulkan
     };
 
-    virtual result_code initialize()                                       = 0;
+    virtual result_code initialize(const window_config& config)            = 0;
     virtual result_code render_triangle(const triangle<vertex2d_rgba>& tr) = 0;
 
-    render_api get_api() const noexcept { return api; };
+    api get_api() const noexcept { return current_api; };
 
 protected:
-    render_api api;
+    api current_api;
 };
-} // namespace yg
+} // namespace yg::render

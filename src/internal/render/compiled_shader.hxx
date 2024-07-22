@@ -2,7 +2,7 @@
 
 #include <cstdint>
 
-namespace yg
+namespace yg::render
 {
 
 enum shader_type
@@ -25,4 +25,4 @@ protected:
     const char* path_to_shader;
     shader_type type;
 };
-} // namespace yg
+} // namespace yg::render
