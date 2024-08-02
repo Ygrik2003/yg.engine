@@ -29,3 +29,9 @@ add_executable(yg_engine_runner ${CMAKE_CURRENT_LIST_DIR}/main.cxx)
 target_compile_definitions(yg_engine_runner PRIVATE YG_ENGINE_MAIN
                                                     YG_ENGINE_UNIT_TESTS)
 target_link_libraries(yg_engine_runner PRIVATE yg::engine)
+add_custom_command(
+    TARGET yg_engine_runner
+    POST_BUILD
+    COMMAND
+        ${CMAKE_COMMAND} -E create_symlink ${CMAKE_SOURCE_DIR}/data
+        $<TARGET_FILE_DIR:yg_engine_runner>/data)

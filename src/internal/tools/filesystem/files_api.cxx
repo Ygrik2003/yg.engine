@@ -2,7 +2,7 @@
 #include "libassert/assert.hpp"
 
 // TODO: Make it cross-platform with SDL_...
-std::string yg::read_file(const char* path)
+std::string yg::files_api::read_file(const char* path)
 {
     constexpr auto read_size = std::size_t(4096);
     auto           stream    = std::ifstream(path);

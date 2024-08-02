@@ -7,5 +7,5 @@ add_custom_command(
     TARGET 00_basic_render_triangle
     POST_BUILD
     COMMAND
-        ${CMAKE_COMMAND} -E create_symlink ${CMAKE_CURRENT_LIST_DIR}/data
+        ${CMAKE_COMMAND} -E create_symlink ${CMAKE_SOURCE_DIR}/data
         $<TARGET_FILE_DIR:00_basic_render_triangle>/data)

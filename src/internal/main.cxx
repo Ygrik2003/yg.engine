@@ -1,7 +1,9 @@
 #if defined(YG_ENGINE_MAIN)
 
 #include "base_types.hxx"
+#include "render/opengl/compiled_shader_opengl.hxx"
 #include "render/opengl/render_context_opengl.hxx"
+#include "render/opengl/shader_opengl.hxx"
 #include "render/types.hxx"
 #include "tools/threads/unit_tests_thread.hxx"
 #include "window/sdl/window_sdl.hxx"
@@ -15,16 +17,49 @@
 #include <chrono>
 #include <thread>
 
-void main_cycle(yg::window* wnd, yg::window_config wnd_cfg)
+void main_cycle(yg::window*          wnd,
+                yg::render::context* ctx,
+                yg::window_config    wnd_cfg)
 {
+    using namespace yg;
+    using namespace render;
+
+    auto* shader_opengl_vert = new render::opengl::compiled_shader_impl(
+        "data/shaders/basic_shader.vert", render::shader_type::VERTEX);
+    auto* shader_opengl_frag = new render::opengl::compiled_shader_impl(
+        "data/shaders/basic_shader.frag", render::shader_type::FRAGMENT);
+
+    auto shader_opengl = render::opengl::shader_impl();
+    shader_opengl.add_compiled_shader(shader_opengl_vert);
+    shader_opengl.add_compiled_shader(shader_opengl_frag);
+
+    shader_opengl.use();
+
+    auto rotate_matrix = [](double phi)
+    {
+        return glm::mat2x2(
+            glm::cos(phi), -glm::sin(phi), glm::sin(phi), glm::cos(phi));
+    };
+    render::triangle<render::vertex2d_rgba> test_tr{
+        { { 1., -1. }, 0xFF0000FF },
+        { { 1., 1. }, 0xFFFF0000 },
+        { { -1., -1. }, 0xFF00FF00 }
+    };
+
+    double delta_phi = 0.1;
     while (wnd->process_events())
     {
         using namespace std::chrono;
         using namespace std::this_thread;
 
-        wnd->swap_buffers();
+        std::for_each(test_tr.begin(),
+                      test_tr.end(),
+                      [&rotate_matrix, delta_phi](render::vertex2d_rgba& vert)
+                      { vert.pos = vert.pos * rotate_matrix(delta_phi); });
 
-        sleep_for(milliseconds(1000 / wnd_cfg.fps));
+        auto result = ctx->render_triangle(test_tr);
+        wnd->swap_buffers();
+        sleep_for(milliseconds(1000 / wnd_cfg.fps)); // TODO: do real FPS
     }
 }
 
@@ -61,7 +96,7 @@ int main(int argc, char* argv[])
             utt = std::make_unique<yg::unit_tests_thread>();
         }
     }
-    main_cycle(wnd_sdl.get(), wnd_cfg);
+    main_cycle(wnd_sdl.get(), ctx_opengl.get(), wnd_cfg);
 
     return 0;
 }

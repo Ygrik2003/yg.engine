@@ -1,5 +1,7 @@
 #include "window_sdl.hxx"
 
+#include "window/events/keyboard.hxx"
+
 #include "libassert/assert.hpp"
 #include "spdlog/spdlog.h"
 
@@ -80,6 +82,34 @@ bool yg::window_sdl::process_events()
             case SDL_EVENT_QUIT:
                 is_alive = false;
                 spdlog::info("SDL_EVENT_QUIT");
+                break;
+            case SDL_EVENT_KEY_DOWN:
+                // clang-format off
+                if (sdl_event.key.keysym.sym == SDLK_w)     events::keyboard.w     = 1;
+                if (sdl_event.key.keysym.sym == SDLK_s)     events::keyboard.s     = 1;
+                if (sdl_event.key.keysym.sym == SDLK_a)     events::keyboard.a     = 1;
+                if (sdl_event.key.keysym.sym == SDLK_d)     events::keyboard.d     = 1;
+                if (sdl_event.key.keysym.sym == SDLK_SPACE) events::keyboard.space = 1;
+                if (sdl_event.key.keysym.sym == SDLK_LEFT)  events::keyboard.left  = 1;
+                if (sdl_event.key.keysym.sym == SDLK_RIGHT) events::keyboard.right = 1;
+                if (sdl_event.key.keysym.sym == SDLK_UP)    events::keyboard.up    = 1;
+                if (sdl_event.key.keysym.sym == SDLK_DOWN)  events::keyboard.down  = 1;
+                // clang-format on
+                break;
+
+            case SDL_EVENT_KEY_UP:
+
+                // clang-format off
+                if (sdl_event.key.keysym.sym == SDLK_w)     events::keyboard.w     = 0;
+                if (sdl_event.key.keysym.sym == SDLK_s)     events::keyboard.s     = 0;
+                if (sdl_event.key.keysym.sym == SDLK_a)     events::keyboard.a     = 0;
+                if (sdl_event.key.keysym.sym == SDLK_d)     events::keyboard.d     = 0;
+                if (sdl_event.key.keysym.sym == SDLK_SPACE) events::keyboard.space = 0;
+                if (sdl_event.key.keysym.sym == SDLK_LEFT)  events::keyboard.left  = 0;
+                if (sdl_event.key.keysym.sym == SDLK_RIGHT) events::keyboard.right = 0;
+                if (sdl_event.key.keysym.sym == SDLK_UP)    events::keyboard.up    = 0;
+                if (sdl_event.key.keysym.sym == SDLK_DOWN)  events::keyboard.down  = 0;
+                // clang-format on
                 break;
         }
     }

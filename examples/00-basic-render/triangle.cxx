@@ -8,6 +8,14 @@
 #include <chrono>
 #include <thread>
 
+enum triangle_type
+{
+    textured,
+    colored,
+    textured_colored,
+
+};
+
 int main()
 {
     using namespace yg;
@@ -21,9 +29,9 @@ int main()
     auto wnd_manager = new window_manager(wnd_cfg, wnd_sdl, ctx_opengl);
 
     auto* shader_opengl_vert = new render::opengl::compiled_shader_impl(
-        "data/shaders/shader.vert", render::shader_type::VERTEX);
+        "data/shaders/basic_shader.vert", render::shader_type::VERTEX);
     auto* shader_opengl_frag = new render::opengl::compiled_shader_impl(
-        "data/shaders/shader.frag", render::shader_type::FRAGMENT);
+        "data/shaders/basic_shader.frag", render::shader_type::FRAGMENT);
 
     auto shader_opengl = render::opengl::shader_impl();
     shader_opengl.add_compiled_shader(shader_opengl_vert);

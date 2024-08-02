@@ -108,7 +108,12 @@ public:
     {
     }
     inline vertex_type* data() const noexcept { return values.data(); }
-    inline std::size_t  size() const noexcept
+    std::array<vertex_type, 3>::iterator begin() noexcept
+    {
+        return values.begin();
+    }
+    std::array<vertex_type, 3>::iterator end() noexcept { return values.end(); }
+    inline std::size_t                   size() const noexcept
     {
         return values.size() * sizeof(vertex_type);
     }

@@ -38,7 +38,7 @@ void yg::render::opengl::compiled_shader_impl::attach(
 
 void yg::render::opengl::compiled_shader_impl::load()
 {
-    std::string shader_code   = read_file(path_to_shader);
+    std::string shader_code   = yg::files_api::read_file(path_to_shader);
     const char* shader_code_c = shader_code.data();
 
     switch (type)
