@@ -26,8 +26,9 @@ set_target_properties(yg_engine PROPERTIES POSITION_INDEPENDENT_CODE ON)
 add_library(yg::engine ALIAS yg_engine)
 
 add_executable(yg_engine_runner ${CMAKE_CURRENT_LIST_DIR}/main.cxx)
-target_compile_definitions(yg_engine_runner PRIVATE YG_ENGINE_MAIN
-                                                    YG_ENGINE_UNIT_TESTS)
+target_compile_definitions(
+    yg_engine_runner PRIVATE YG_ENGINE_MAIN YG_ENGINE_UNIT_TESTS
+                             __YG_GL_DEBUG__)
 target_link_libraries(yg_engine_runner PRIVATE yg::engine)
 add_custom_command(
     TARGET yg_engine_runner

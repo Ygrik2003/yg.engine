@@ -13,3 +13,8 @@ add_library(libs::glad ALIAS glad)
 add_library(argparse INTERFACE ${CMAKE_CURRENT_LIST_DIR}/argparse/argparse.hxx)
 target_include_directories(argparse INTERFACE ${CMAKE_CURRENT_LIST_DIR})
 add_library(libs::argparse ALIAS argparse)
+
+add_library(picopng INTERFACE)
+target_sources(picopng INTERFACE ${CMAKE_CURRENT_LIST_DIR}/picopng/picopng.hxx)
+
+add_library(libs::picopng ALIAS picopng)

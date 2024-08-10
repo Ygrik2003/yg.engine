@@ -4,6 +4,9 @@
 
 #include "glad/glad.h"
 
+namespace yg::render::opengl
+{
+
 template <class vertex_type>
 void bind_vertexes()
 {
@@ -32,28 +35,28 @@ void bind_vertexes()
 //     YG_GL_CHECK_ERRORS();
 // }
 
-// template <class vertex_type>
-// void bind_texture_coords()
-// {
-//     glEnableVertexAttribArray(2);
-//     YG_GL_CHECK_ERRORS();
-//     glVertexAttribPointer(
-//         2,
-//         2,
-//         GL_FLOAT,
-//         GL_FALSE,
-//         sizeof(vertex_type),
-//         reinterpret_cast<GLvoid*>(vertex_type::offset_texture));
-//     YG_GL_CHECK_ERRORS();
-// }
-
 template <class vertex_type>
-void bind_colors()
+void bind_texture_coords()
 {
     glEnableVertexAttribArray(1);
     YG_GL_CHECK_ERRORS();
     glVertexAttribPointer(
         1,
+        2,
+        GL_FLOAT,
+        GL_FALSE,
+        sizeof(vertex_type),
+        reinterpret_cast<GLvoid*>(vertex_type::offset_for_texture));
+    YG_GL_CHECK_ERRORS();
+}
+
+template <class vertex_type>
+void bind_colors()
+{
+    glEnableVertexAttribArray(2);
+    YG_GL_CHECK_ERRORS();
+    glVertexAttribPointer(
+        2,
         4,
         GL_UNSIGNED_BYTE,
         GL_TRUE,
@@ -62,8 +65,7 @@ void bind_colors()
     YG_GL_CHECK_ERRORS();
 }
 
-yg::render::context::result_code yg::render::opengl::context_impl::initialize(
-    const window_config& config)
+context::result_code context_impl::initialize(const window_config& config)
 {
     GLuint vbo = 0;
     glGenBuffers(1, &vbo);
@@ -96,8 +98,27 @@ yg::render::context::result_code yg::render::opengl::context_impl::initialize(
     return result_code::SUCCESS;
 }
 
-yg::render::context::result_code
-yg::render::opengl::context_impl::render_triangle(
+void context_impl::set_viewport(std::size_t dx,
+                                std::size_t dy,
+                                std::size_t x,
+                                std::size_t y) const
+{
+    glViewport(dx, dy, x, y);
+    YG_GL_CHECK_ERRORS();
+}
+
+context::result_code context_impl::render_triangle(const triangle<vertex2d>& tr)
+{
+    glBufferData(GL_ARRAY_BUFFER, sizeof(tr), &tr, GL_STATIC_DRAW);
+    YG_GL_CHECK_ERRORS();
+
+    bind_vertexes<vertex2d>();
+
+    glDrawArrays(GL_TRIANGLES, 0, 3);
+    YG_GL_CHECK_ERRORS();
+    return result_code::SUCCESS;
+}
+context::result_code context_impl::render_triangle(
     const triangle<vertex2d_rgba>& tr)
 {
     glBufferData(GL_ARRAY_BUFFER, sizeof(tr), &tr, GL_STATIC_DRAW);
@@ -110,3 +131,31 @@ yg::render::opengl::context_impl::render_triangle(
     YG_GL_CHECK_ERRORS();
     return result_code::SUCCESS;
 }
+context::result_code context_impl::render_triangle(
+    const triangle<vertex2d_uv>& tr)
+{
+    glBufferData(GL_ARRAY_BUFFER, sizeof(tr), &tr, GL_STATIC_DRAW);
+    YG_GL_CHECK_ERRORS();
+
+    bind_vertexes<vertex2d_uv>();
+    bind_texture_coords<vertex2d_uv>();
+
+    glDrawArrays(GL_TRIANGLES, 0, 3);
+    YG_GL_CHECK_ERRORS();
+    return result_code::SUCCESS;
+}
+context::result_code context_impl::render_triangle(
+    const triangle<vertex2d_uv_rgba>& tr)
+{
+    glBufferData(GL_ARRAY_BUFFER, sizeof(tr), &tr, GL_STATIC_DRAW);
+    YG_GL_CHECK_ERRORS();
+
+    bind_vertexes<vertex2d_uv_rgba>();
+    bind_texture_coords<vertex2d_uv_rgba>();
+    bind_colors<vertex2d_uv_rgba>();
+
+    glDrawArrays(GL_TRIANGLES, 0, 3);
+    YG_GL_CHECK_ERRORS();
+    return result_code::SUCCESS;
+}
+} // namespace yg::render::opengl

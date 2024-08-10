@@ -15,4 +15,8 @@ yg::window_manager::window_manager(window_config&       config,
 
     ASSERT(ctx->initialize(config) != yg::render::context::result_code::ERROR &&
            "Can't initialize render context");
+
+    auto set_viewport_size = [ctx](std::size_t x, std::size_t y)
+    { ctx->set_viewport(0, 0, x, y); };
+    backend->on_resize(set_viewport_size);
 }

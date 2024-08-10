@@ -1,3 +1,5 @@
+#pragma once
+
 #include <cstdint>
 
 namespace events
@@ -24,7 +26,7 @@ namespace events
 //     float y_rel;
 // } motion;
 
-static struct
+struct keyboard
 {
     uint8_t w : 1;
     uint8_t s : 1;
@@ -36,7 +38,7 @@ static struct
     uint8_t down : 1;
     uint8_t space : 1;
     uint8_t esc : 1;
-} keyboard;
+};
 
 // struct event_action
 // {

@@ -22,8 +22,17 @@ public:
         // Vulkan
     };
 
-    virtual result_code initialize(const window_config& config)            = 0;
+    virtual result_code initialize(const window_config& config) = 0;
+    virtual void        set_viewport(std::size_t dx,
+                                     std::size_t dy,
+                                     std::size_t x,
+                                     std::size_t y) const       = 0;
+
+    virtual result_code render_triangle(const triangle<vertex2d>& tr)      = 0;
     virtual result_code render_triangle(const triangle<vertex2d_rgba>& tr) = 0;
+    virtual result_code render_triangle(const triangle<vertex2d_uv>& tr)   = 0;
+    virtual result_code render_triangle(
+        const triangle<vertex2d_uv_rgba>& tr) = 0;
 
     api get_api() const noexcept { return current_api; };
 

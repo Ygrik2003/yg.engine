@@ -1,14 +1,13 @@
 #include "window_sdl.hxx"
 
-#include "window/events/keyboard.hxx"
-
-#include "libassert/assert.hpp"
-#include "spdlog/spdlog.h"
-
-#include <SDL3/SDL.h>
+#include "render/opengl/render_context_opengl.hxx"
 
 #include "glad/glad.h"
+#include "libassert/assert.hpp"
+#include "spdlog/spdlog.h"
 #include "vulkan/vulkan.h"
+
+#include <SDL3/SDL.h>
 
 yg::window_sdl::window_sdl(yg::render::context::api render_api) noexcept
 {
@@ -46,6 +45,7 @@ yg::window::result_code yg::window_sdl::initialize(window_config& config)
     if (config.is_full_screen)
     {
         window_flags |= SDL_WINDOW_FULLSCREEN;
+        // TODO: Doesn't work on tile manager bspwm :D
         int temp_size_x, temp_size_y;
         SDL_GetWindowSize(
             static_cast<SDL_Window*>(wnd), &temp_size_x, &temp_size_y);
@@ -72,44 +72,52 @@ yg::window::result_code yg::window_sdl::initialize(window_config& config)
 
 bool yg::window_sdl::process_events()
 {
-    bool      is_alive = true;
-    SDL_Event sdl_event;
+    static bool      is_alive = true;
+    static SDL_Event sdl_event;
 
     while (SDL_PollEvent(&sdl_event))
     {
         switch (sdl_event.type)
         {
             case SDL_EVENT_QUIT:
-                is_alive = false;
                 spdlog::info("SDL_EVENT_QUIT");
+                is_alive = false;
                 break;
             case SDL_EVENT_KEY_DOWN:
                 // clang-format off
-                if (sdl_event.key.keysym.sym == SDLK_w)     events::keyboard.w     = 1;
-                if (sdl_event.key.keysym.sym == SDLK_s)     events::keyboard.s     = 1;
-                if (sdl_event.key.keysym.sym == SDLK_a)     events::keyboard.a     = 1;
-                if (sdl_event.key.keysym.sym == SDLK_d)     events::keyboard.d     = 1;
-                if (sdl_event.key.keysym.sym == SDLK_SPACE) events::keyboard.space = 1;
-                if (sdl_event.key.keysym.sym == SDLK_LEFT)  events::keyboard.left  = 1;
-                if (sdl_event.key.keysym.sym == SDLK_RIGHT) events::keyboard.right = 1;
-                if (sdl_event.key.keysym.sym == SDLK_UP)    events::keyboard.up    = 1;
-                if (sdl_event.key.keysym.sym == SDLK_DOWN)  events::keyboard.down  = 1;
+                // if (SDLK_w == sdl_event.key.keysym.sym)     kb.w     = 1;
+                // if (SDLK_s == sdl_event.key.keysym.sym)     kb.s     = 1;
+                // if (SDLK_a == sdl_event.key.keysym.sym)     kb.a     = 1;
+                // if (SDLK_d == sdl_event.key.keysym.sym)     kb.d     = 1;
+                // if (SDLK_SPACE == sdl_event.key.keysym.sym) kb.space = 1;
+                // if (SDLK_LEFT == sdl_event.key.keysym.sym)  kb.left  = 1;
+                // if (SDLK_RIGHT == sdl_event.key.keysym.sym) kb.right = 1;
+                // if (SDLK_UP == sdl_event.key.keysym.sym)    kb.up    = 1;
+                // if (SDLK_DOWN == sdl_event.key.keysym.sym)  kb.down  = 1;
                 // clang-format on
                 break;
 
             case SDL_EVENT_KEY_UP:
-
                 // clang-format off
-                if (sdl_event.key.keysym.sym == SDLK_w)     events::keyboard.w     = 0;
-                if (sdl_event.key.keysym.sym == SDLK_s)     events::keyboard.s     = 0;
-                if (sdl_event.key.keysym.sym == SDLK_a)     events::keyboard.a     = 0;
-                if (sdl_event.key.keysym.sym == SDLK_d)     events::keyboard.d     = 0;
-                if (sdl_event.key.keysym.sym == SDLK_SPACE) events::keyboard.space = 0;
-                if (sdl_event.key.keysym.sym == SDLK_LEFT)  events::keyboard.left  = 0;
-                if (sdl_event.key.keysym.sym == SDLK_RIGHT) events::keyboard.right = 0;
-                if (sdl_event.key.keysym.sym == SDLK_UP)    events::keyboard.up    = 0;
-                if (sdl_event.key.keysym.sym == SDLK_DOWN)  events::keyboard.down  = 0;
+                // if (SDLK_w == sdl_event.key.keysym.sym)     kb.w     = 0;
+                // if (SDLK_s == sdl_event.key.keysym.sym)     kb.s     = 0;
+                // if (SDLK_a == sdl_event.key.keysym.sym)     kb.a     = 0;
+                // if (SDLK_d == sdl_event.key.keysym.sym)     kb.d     = 0;
+                // if (SDLK_SPACE == sdl_event.key.keysym.sym) kb.space = 0;
+                // if (SDLK_LEFT == sdl_event.key.keysym.sym)  kb.left  = 0;
+                // if (SDLK_RIGHT == sdl_event.key.keysym.sym) kb.right = 0;
+                // if (SDLK_UP == sdl_event.key.keysym.sym)    kb.up    = 0;
+                // if (SDLK_DOWN == sdl_event.key.keysym.sym)  kb.down  = 0;
                 // clang-format on
+                break;
+            case SDL_EVENT_WINDOW_RESIZED:
+                int temp_size_x, temp_size_y;
+                SDL_GetWindowSize(
+                    static_cast<SDL_Window*>(wnd), &temp_size_x, &temp_size_y);
+                for (auto callback : to_resize)
+                {
+                    callback(temp_size_x, temp_size_y);
+                }
                 break;
         }
     }
@@ -128,6 +136,13 @@ void yg::window_sdl::swap_buffers()
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     YG_GL_CHECK_ERRORS()
+}
+
+void yg::window_sdl::on_resize(
+    std::function<void(std::size_t, std::size_t)> func)
+{
+    // if (find(to_resize.begin(), to_resize.end(), func) == to_resize.end())
+    to_resize.push_back(func);
 }
 
 yg::window::result_code yg::window_sdl::capture_render_context(

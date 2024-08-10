@@ -18,6 +18,9 @@ public:
     bool process_events() override;
     void swap_buffers() override;
 
+    // Callbacks
+    void on_resize(std::function<void(std::size_t, std::size_t)> func) override;
+
 private:
     uint32_t window_flags{ 0 };
     void*    wnd;
